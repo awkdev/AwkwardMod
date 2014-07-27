@@ -50,7 +50,7 @@ class Reddit < ActiveRecord::Base
 
   def self.process
     reddit = self.login
-    if (DateTime.current.to_f - reddit.last_run.to_f)/60 < 1.5
+    if (DateTime.current.to_f - reddit.last_run.to_f)/60 < 1
       puts 'Ran too recently. Exit!'
       return false
     end
