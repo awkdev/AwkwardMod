@@ -38,6 +38,7 @@ gem 'sqlite3'
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin]
 
+gem 'daemons'
 gem 'snoo', :git => "git://github.com/awkdev/snoo.git", :branch => "legacy-master"
 gem 'nokogiri'
 gem 'httparty'
