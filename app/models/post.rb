@@ -25,6 +25,10 @@ class Post < ActiveRecord::Base
   def self.generate_comment(post)
     comment = <<END
 Hi #{post['author']}, your post has been removed because it wasn't flaired. Please flair your post correctly and it will be re-instated automatically. Thanks!
+
+---
+
+^(I am just a bot and cannot reply to your queries. Send a) [^*modmail*](http://www.reddit.com/message/compose?to=%2Fr%2Findia&subject=Flair+Bot) ^(if you have any doubts.)
 END
     comment
   end
