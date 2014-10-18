@@ -49,8 +49,8 @@ END
 
   def self.match_title(post, page, source)
     post['title'] = post['title'].gsub(/\[NP\]/, '')
-    heading = page.css(source.heading).first.try(:text)
-    subheading = page.css(source.subheading).first.try(:text)
+      heading = page.css(source.heading).first.try(:text)
+      subheading = page.css(source.subheading).first.try(:text) unless source.subheading.blank?
     if extract_chars(heading) == extract_chars(post['title'])
       true
     elsif !subheading.blank? && extract_chars(subheading) == extract_chars(post['title'])
@@ -63,6 +63,22 @@ END
   end
 
   def self.extract_chars(text)
-    text.to_s.gsub(/[^\w\d\s]/, '')
+    text.to_s.gsub(/[^\w\d]/, '')
+  end
+
+  def self.match_tweet(post)
+    # If its a twitter link, get the tweet and remove meta data from it
+    tweet_id = post['url'].gsub(/^.*\/(\d+)/,'\1')
+    twitter = Twitter::REST::Client.new do |config|
+      config.consumer_key = Configurable.consumer_key
+      config.consumer_secret = Configurable.consumer_secret
+      config.access_token = Configurable.access_token
+      config.access_token_secret = Configurable.access_token_secret
+    end
+    puts "Getting tweet ID #{tweet_id}"
+    tweet = twitter.status(tweet_id)
+    heading = tweet.text
+    post['title'] = post['title'].gsub(/.*\son Twitter:(.*)/, '\1')
+    extract_chars(heading) == extract_chars(post['title'])
   end
 end

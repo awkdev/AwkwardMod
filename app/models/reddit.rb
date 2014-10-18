@@ -63,13 +63,22 @@ class Reddit < ActiveRecord::Base
       next if (DateTime.current.utc.to_f - post_time.to_f) < 60
 
       # Check for Exact Title
-      sources = Source.where(:domain => post['domain']).where.not(:heading => nil).load
-      match = false
-      sources.each do |source|
-        page = Nokogiri::HTML(open(post['url']))
-        if Post.match_title(post, page, source)
-          match = true
-          break
+      if post['domain'] == 'twitter.com'
+        match = Post.match_tweet(post)
+      else
+        sources = Source.where(:domain => post['domain']).where.not(:heading => nil).load
+        match = false
+        sources.each do |source|
+          begin
+            page = Nokogiri::HTML(open(post['url']))
+          rescue OpenURI::HTTPError => error
+            puts "Error in fetching #{post['url']}: #{error}"
+            page = nil
+          end
+          if !page.blank? && Post.match_title(post, page, source)
+            match = true
+            break
+          end
         end
       end
       # Check for flair
@@ -77,6 +86,7 @@ class Reddit < ActiveRecord::Base
         Post.remove(post, reddit.snoo)
       else
         if match
+          puts "Title matched for post by #{post['author']}. Approved and report!"
           reddit.snoo.approve('t3_' + post['id'])
           sleep(1)
           reddit.snoo.report("t3_#{post['id']}", 'Title matches perfectly, approve if relevant to India' )

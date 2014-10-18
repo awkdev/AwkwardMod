@@ -42,6 +42,7 @@ gem 'daemons'
 gem 'snoo', :git => "git://github.com/awkdev/snoo.git", :branch => "legacy-master"
 gem 'nokogiri'
 gem 'httparty'
+gem 'twitter'
 gem 'delayed_job_active_record'
 gem 'delayed_job_web'
 gem 'configurable_engine'

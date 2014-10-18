@@ -1,5 +1,6 @@
+puts 'Deleting all old sources and importing new'
+Source.destroy_all
 sources = [
-    ["Name","Domain","Heading DOM","Sub-heading DOM"],
     ["TOI","timesofindia.indiatimes.com",".arttle h1"],
     ["TOI mobile","m.timesofindia.com","h1"],
     ["TOI blog","blogs.timesofindia.indiatimes.com","h2.media-heading"],
@@ -19,6 +20,8 @@ sources = [
     ["Rediff","rediff.com","h1.arti_heading"],
     ["Rediff mobile","m.rediff.com","#arti_hd"],
     ["yahoo news","in.news.yahoo.com","h1.headline","h2.subheadline"],
+    ["Yahoo Movies","in.movies.yahoo.com","h1.headline","h2.subheadline"],
+    ["Yahoo Finance","in.finance.yahoo.com","h1.headline","h2.subheadline"],
     ["scoopwhoop","scoopwhoop.com",".art_title"],
     ["Deccan Herald","deccanherald.com","h1"],
     ["Deccan Chronicle","deccanchronicle.com","h1#page-title"],
@@ -33,7 +36,8 @@ sources = [
     ["India Today","indiatoday.intoday.in","h1",".strtitlealias"],
     ["NDTV","ndtv.com","h1"],
     ["NDTV Mobile","m.ndtv.com","h1 div"],
-    ["indianexpress","indianexpress.com","h1"],
+    ["Indianexpress","indianexpress.com","h1"],
+    ["Archive Indianexpress","archive.indianexpress.com","h1"],
     ["Tehelka","tehelka.com","h1#story_title a","#story_intro"],
     ["TelegraphIndia","telegraphindia.com","h1#hd"],
     ["Buzzfeed","buzzfeed.com","h1#post-title","p.description"],
@@ -43,7 +47,19 @@ sources = [
     ["Quartz","qz.com","h1"],
     ["BBC","bbc.co.uk","h1#story-header"],
     ["ANI News","aninews.in","h1"],
-    ["Huffington Post","huffingtonpost.com","h1.story-heading"]
+    ["Huffington Post","huffingtonpost.com","h1.story-heading"],
+    ["Huffington Post 2","huffpost.com","h1.story-heading"],
+    ["Outlook India","outlookindia.com",".livenewsarticleheading"],
+    ["Outlook India","outlookindia.com",".fspheading", ".fspintro"],
+    ["Quora","quora.com",".header h1"],
+    ["Medianama","medianama.com",".title-area h1"],
+    ["Livemint","livemint.com","h1",".sty_sml_summary_18"],
+    ["Moneycontrol","moneycontrol.com","h1.mTitle","p.subTitle"],
+    ["enewspaper of india","eni.network24.co","h1"],
+    ["Siasat","siasat.com","h1"],
+    ["Hindu Jagruti","hindujagruti.org","#main-col h1.entry-title"],
+    ["Sify","sify.com","h1"],
+    ["Scroll","scroll.in",".article .title", ".article .summary"]
 ]
 
 sources.each do |source|
