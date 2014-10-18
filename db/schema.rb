@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140727070428) do
+ActiveRecord::Schema.define(version: 20140802151922) do
 
   create_table "configurables", force: true do |t|
     t.string   "name"
@@ -51,6 +51,14 @@ ActiveRecord::Schema.define(version: 20140727070428) do
     t.string   "modhash"
     t.string   "cookies"
     t.datetime "last_run"
+  end
+
+  create_table "sources", force: true do |t|
+    t.string   "domain"
+    t.string   "heading"
+    t.string   "subheading"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

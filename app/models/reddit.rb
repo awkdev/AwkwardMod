@@ -1,3 +1,4 @@
+require 'open-uri'
 class Reddit < ActiveRecord::Base
   attr_accessor :snoo
 
@@ -17,6 +18,7 @@ class Reddit < ActiveRecord::Base
       }
       puts 'Logging in via cookie'
     end
+    bot_options[:useragent] = Configurable.useragent
     # Name of the bot using Snoo Reddit API wrapper
     awkmod = Snoo::Client.new(bot_options)
     if awkmod.cookies.nil?
@@ -26,7 +28,8 @@ class Reddit < ActiveRecord::Base
       else
         awkmod = Snoo::Client.new({
                                       :username => Configurable.username,
-                                      :password => Configurable.password
+                                      :password => Configurable.password,
+                                      :useragent => Configurable.useragent
                                   })
         puts 'cookie didnt work. Logged in again'
       end
@@ -56,7 +59,29 @@ class Reddit < ActiveRecord::Base
     end
     posts = reddit.get_unmoderated_links
     posts.each do |post|
-      Post.remove(post, reddit.snoo) if post['link_flair_text'].blank?
+      post_time = DateTime.strptime(post['created_utc'].to_s, "%s")
+      next if (DateTime.current.utc.to_f - post_time.to_f) < 8
+
+      # Check for Exact Title
+      sources = Source.where(:domain => post['domain']).where.not(:heading => nil).load
+      match = false
+      sources.each do |source|
+        page = Nokogiri::HTML(open(post['url']))
+        if Post.match_title(post, page, source)
+          match = true
+          break
+        end
+      end
+      # Check for flair
+      if post['link_flair_text'].blank?
+        Post.remove(post, reddit.snoo)
+      else
+        if match
+          reddit.snoo.approve('t3_' + post['id'])
+          sleep(1)
+          reddit.snoo.report("t3_#{post['id']}", 'Title matches perfectly, approve if relevant to India' )
+        end
+      end
     end
   end
 
