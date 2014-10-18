@@ -60,7 +60,7 @@ class Reddit < ActiveRecord::Base
     posts = reddit.get_unmoderated_links
     posts.each do |post|
       post_time = DateTime.strptime(post['created_utc'].to_s, "%s")
-      next if (DateTime.current.utc.to_f - post_time.to_f) < 8
+      next if (DateTime.current.utc.to_f - post_time.to_f) < 60
 
       # Check for Exact Title
       sources = Source.where(:domain => post['domain']).where.not(:heading => nil).load
