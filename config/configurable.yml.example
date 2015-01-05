@@ -1,0 +1,49 @@
+username:
+   name: username
+   type: string
+   default: awkwardmod
+
+password:
+   name: password
+   type: string
+   default:
+
+subreddits:
+   name: subreddits
+   type: string
+   default: india
+
+time_interval:
+   name: time_interval
+   type: string
+   default: 2
+
+post_limit:
+   name: limit
+   type: string
+   default: 200
+
+useragent:
+  name: useragent
+  type: string
+  default: 'Mozilla/5.0 (Windows NT 6.3; Win64, x64; Trident/7.0; Touch; rv:11.0) like Gecko'
+
+consumer_key:
+  name: consumer_key
+  type: string
+  default: ''
+
+consumer_secret:
+  name: consumer_secret
+  type: string
+  default: ''
+
+access_token:
+  name: access_token
+  type: string
+  default: ''
+
+access_token_secret:
+  name: access_token_secret
+  type: string
+  default: ''
