@@ -75,8 +75,8 @@ class Reddit < ActiveRecord::Base
             deleted_users << user
             puts "#{user} SB'd"
           elsif e.inspect.include?('429')
-            puts 'Bot hit the ratelimit, entering cool down (5minutes) and after that it\'ll redo this loop'
-            sleep(500)
+            puts 'Bot hit the ratelimit, entering cool down (2minutes) and after that it\'ll redo this loop'
+            sleep(120)
             redo
           else
             puts 'Some other issue occurred: ' + e.inspect.to_s
