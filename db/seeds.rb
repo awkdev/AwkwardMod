@@ -59,7 +59,8 @@ sources = [
     ["Siasat","siasat.com","h1"],
     ["Hindu Jagruti","hindujagruti.org","#main-col h1.entry-title"],
     ["Sify","sify.com","h1"],
-    ["Scroll","scroll.in",".article .title", ".article .summary"]
+    ["Scroll","scroll.in",".article .title", ".article .summary"],
+    ["OpIndia","opindia.com","h1.entry-title"]
 ]
 
 sources.each do |source|

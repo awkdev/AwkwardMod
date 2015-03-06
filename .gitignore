@@ -10,6 +10,7 @@
 /db/awkmod_dev.sqlite
 Gemfile.lock
 /config/configurable.yml
+/new_usernotes.json
 
 # Ignore the default SQLite database.
 /db/*.sqlite3

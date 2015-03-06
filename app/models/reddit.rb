@@ -51,6 +51,42 @@ class Reddit < ActiveRecord::Base
     posts
   end
 
+  def cleanup_usernotes(sub_name = 'india')
+    puts 'Getting usernotes'
+    usernotes = self.snoo.get("/r/#{sub_name}/wiki/usernotes.json")
+    begin
+      usernotes = JSON.parse(usernotes['data']['content_md'])
+    rescue => e
+      puts e.inspect
+      puts 'Error extracting user notes from /r/india'
+    end
+    if usernotes['ver'].blank?
+      puts 'Error extracting user notes from /r/india'
+    else
+      user_list = usernotes['users'].keys
+      deleted_users = []
+      puts "Going to check for shadowbanned users from a list of #{user_list.length} names"
+      user_list[1..2].each do |user|
+        begin
+          puts "checking #{user} ..."
+          user_info = self.snoo.get_user_info(user)
+        rescue => e
+          puts "#{user} SB'd"
+        end
+        deleted_users << user if user_info.nil?
+      end
+      puts "Found #{deleted_users.length} shadowbanned users:\n#{deleted_users.join(', ')}"
+      usernotes['users'].except!(*deleted_users)
+      begin
+        File.write('new_usernotes.json', usernotes.to_json)
+      rescue => e
+        puts e.inspect
+        puts 'Could not write updated usernotes to a file. Returned new usernotes instead'
+      end
+      usernotes
+    end
+  end
+
   def self.process
     reddit = self.login
     if (DateTime.current.to_f - reddit.last_run.to_f)/60 < 1
