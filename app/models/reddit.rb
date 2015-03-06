@@ -66,14 +66,23 @@ class Reddit < ActiveRecord::Base
       user_list = usernotes['users'].keys
       deleted_users = []
       puts "Going to check for shadowbanned users from a list of #{user_list.length} names"
-      user_list[1..2].each do |user|
+      user_list.each do |user|
         begin
           puts "checking #{user} ..."
           user_info = self.snoo.get_user_info(user)
         rescue => e
-          puts "#{user} SB'd"
+          if e.inspect.include?('404')
+            deleted_users << user
+            puts "#{user} SB'd"
+          elsif e.inspect.include?('429')
+            puts 'Bot hit the ratelimit, entering cool down (5minutes) and after that it\'ll redo this loop'
+            sleep(500)
+            redo
+          else
+            puts 'Some other issue occurred: ' + e.inspect.to_s
+          end
         end
-        deleted_users << user if user_info.nil?
+        sleep(2.5)
       end
       puts "Found #{deleted_users.length} shadowbanned users:\n#{deleted_users.join(', ')}"
       usernotes['users'].except!(*deleted_users)
@@ -83,7 +92,6 @@ class Reddit < ActiveRecord::Base
         puts e.inspect
         puts 'Could not write updated usernotes to a file. Returned new usernotes instead'
       end
-      usernotes
     end
   end
 

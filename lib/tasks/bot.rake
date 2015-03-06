@@ -8,4 +8,9 @@ namespace :bot do
   task approve_flaired: :environment do
     Reddit.reconcile
   end
+
+  task clean_usernotes: :environment do
+    awk = Reddit.login
+    awk.cleanup_usernotes('india')
+  end
 end
