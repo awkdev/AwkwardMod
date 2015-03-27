@@ -24,7 +24,15 @@ class Post < ActiveRecord::Base
 
   def self.generate_comment(post)
     comment = <<END
-Hi #{post['author']}, your post has been removed because it wasn't flaired. Please flair your post correctly and it will be re-instated automatically. Thanks!
+Hi #{post['author']}, your post has been removed because it wasn't flaired. Please flair your post correctly and it will be re-instated automatically.
+
+>**What is a Flair?**
+
+>A flair basically categorizes your post in one of the pre-existing categories on /r/india. Once you make a submission, you'll notice a red button which says *Flair your post* . Click on it and choose a flair according to the submission's theme, then hit Save.
+
+>* If you want a civil and focused discussion with NO off-topic comments, choose "[R]ediquette". We do not allow trolling and other unnecessary behaviour in [R] threads.
+* If you are posting from a handheld device, append [NP] for non-political, [P] for political and [R] to the title of the post and our bot will flair it accordingly.
+* **Example**: http://i.imgur.com/FKs9uVI.png
 
 ---
 
