@@ -46,7 +46,7 @@ class Reddit < ActiveRecord::Base
   end
 
   def get_unmoderated_links
-    posts = snoo.get_listing(subreddit: Configurable.subreddits, page: 'about/unmoderated', limit: Configurable.post_limit)['data']['children'].map{|post| post['data']}
+    posts = snoo.get_listing(subreddit: Configurable.subreddits, page: 'about/unmoderated', limit: Configurable.post_limit)['data']['children'].select{|post| post['data']['banned_by'].nil?}.map{|post| post['data']}
     self.update_attribute(:last_run, DateTime.current)
     posts
   end
