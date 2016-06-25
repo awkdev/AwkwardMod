@@ -56,7 +56,7 @@ END
   end
 
   def self.match_title(post, page, source)
-    post['title'] = post['title'].gsub(/\[NP\]/, '')
+    post['title'] = post['title'].gsub(/\[(P|Politics|Political|NP|Non-Political|Non Political|NN|Net-Neutrality|Net Neutrality|Scheduled|ASK|AS|AskIndia|Help|Sports|SP|Policy|TE|Tech|Technology|Sci|Science|Sci & Tech|Science & Technology|Food|FO|R|Serious|Reddiquette)\]/, '')
       heading = page.css(source.heading).first.try(:text)
       subheading = page.css(source.subheading).first.try(:text) unless source.subheading.blank?
     if extract_chars(heading) == extract_chars(post['title'])
