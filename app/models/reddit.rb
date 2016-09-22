@@ -19,6 +19,7 @@ class Reddit < ActiveRecord::Base
       puts 'Logging in via cookie'
     end
     bot_options[:useragent] = Configurable.useragent
+    bot_options[:url]       = 'https://www.reddit.com'
     # Name of the bot using Snoo Reddit API wrapper
     awkmod = Snoo::Client.new(bot_options)
     if awkmod.cookies.nil?
@@ -27,9 +28,10 @@ class Reddit < ActiveRecord::Base
         exit!
       else
         awkmod = Snoo::Client.new({
-                                      :username => Configurable.username,
-                                      :password => Configurable.password,
-                                      :useragent => Configurable.useragent
+                                      :username  => Configurable.username,
+                                      :password  => Configurable.password,
+                                      :useragent => Configurable.useragent,
+                                      :url       => 'https://www.reddit.com'
                                   })
         puts 'cookie didnt work. Logged in again'
       end
@@ -133,7 +135,7 @@ class Reddit < ActiveRecord::Base
           puts "Title matched for post by #{post['author']}. Approved and report!"
           reddit.snoo.approve('t3_' + post['id'])
           sleep(1)
-          reddit.snoo.report("t3_#{post['id']}", 'Title matches perfectly, approve if relevant to India' )
+          # reddit.snoo.report("t3_#{post['id']}", 'Title matches perfectly, approve if relevant to India' )
         end
       end
     end
